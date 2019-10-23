@@ -29,7 +29,7 @@ func (cmd Power) Name() string { return "power" }
 
 func (cmd Power) Help(args []string) {
 	fmt.Printf("%s %s EXPONENT\n", os.Args[0], args[0])
-	fmt.Println("Applies a power law function with a coefficient of 1.")
+	fmt.Println("Apply a power law function with a coefficient of 1.")
 	return
 }
 

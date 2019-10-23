@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Package gamma provides an interface for querying and programming the
-// CRTC lookup tables in terms of simple, hardware independent functions.
 package gamma
 
 /*

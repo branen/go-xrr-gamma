@@ -13,38 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+/*
+Command demo demonstrates some of the capabilities of the go-xrr-gamma module.
+
+Write-only
+
+Reset the lookup tables to their default.  (Same as "demo power 1".)
+    $ demo reset
+
+Apply a power law function with exponent POWER and coefficient 1.
+    $ demo power POWER
+
+Make all three color channels channels bilevel.
+    $ demo bilevel
+
+Read and Write-back
+
+Dim the existing lookup tables by 50%.
+    $ demo dim
+
+Animation
+
+Make the screen pulse.
+    $ demo pulse
+
+Demo an "alert" effect with smooth transitions and event-driven accents.
+(Send SIGUSR1 to the process to "strobe" the screen, SIGUSR2 to "warble" the screen, or SIGINT to exit.)
+    $ demo alert
+*/
 package main
-
-import (
-	"fmt"
-	"github.com/branen/go-xrr-gamma/gamma"
-	"log"
-	"os"
-)
-
-type Reset struct{}
-
-func init()                  { cmds = append(cmds, Reset{}) }
-func (_ Reset) Name() string { return "reset" }
-
-func (_ Reset) Help(args []string) {
-	fmt.Printf("%s %s\n", os.Args[0], args[0])
-	fmt.Println("Reset the gamma to its default.")
-	return
-}
-
-func (_ Reset) Main(args []string) {
-	var (
-		cl  *gamma.Client
-		s   *gamma.Session
-		err error
-	)
-	if cl, err = gamma.NewClient(); err != nil {
-		log.Fatal(err)
-	}
-	if s, err = cl.NewSession(); err != nil {
-		log.Fatal(err)
-	}
-	s.SetGamma(gamma.PowerFn(1))
-	return
-}
