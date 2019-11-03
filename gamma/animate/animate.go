@@ -135,6 +135,11 @@ func RestoreOnExit(b bool) Option {
 // error (or nil) will be written when the animation exits; EventChan ev,
 // through which events may be sent to xft; and CancelFunc c, which may be used
 // to cancel a running animation.
+//
+// NOTE: Once a value has been received on e, Animate will clear any
+// outstanding sends on ev and close it.  Code that sends on ev *concurrently*
+// with a receive on e will work fine, but code that sends on ev *after* a
+// receive on e will panic.
 func Animate(
 	cl *gamma.Client, xft XferFnAtTime, opts ...Option,
 ) (
@@ -262,8 +267,22 @@ loop:
 		s.SetGamma(baseFn)
 	}
 bail:
-	if err != nil {
-		o.err <- err
+	// Drain o.event until o.err has been read.
+	for {
+		select {
+		case o.err <- err:
+			break
+		case <-o.event:
+		}
 	}
 	close(o.err)
+	// Drain o.event until there are no more blocked writers.
+	for {
+		select {
+		case <-o.event:
+		default:
+			break
+		}
+	}
+	close(o.event)
 }
