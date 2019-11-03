@@ -210,10 +210,10 @@ func animate(o options) {
 loop:
 	for {
 		if exit {
-			break
+			break loop
 		}
 		if newLut, err = s.GetLookupTable(); err != nil {
-			break
+			break loop
 		}
 		if oldLut.IsZero() {
 			baseFn = newLut.XferFn()
@@ -222,7 +222,7 @@ loop:
 				if o.exitOnForeignUpdate {
 					err = ForeignCrtcUpdate
 					o.restoreOnExit = false
-					break
+					break loop
 				} else {
 					baseFn = newLut.XferFn()
 				}
@@ -232,7 +232,7 @@ loop:
 			time.Now().Sub(anchor), baseFn, event)
 		s.SetGamma(curFn)
 		if oldLut, err = s.GetLookupTable(); err != nil {
-			break
+			break loop
 		}
 		thisUpdate = time.Now()
 		extraTime = o.updateInterval - thisUpdate.Sub(lastUpdate)
