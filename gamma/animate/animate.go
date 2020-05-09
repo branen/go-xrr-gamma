@@ -58,11 +58,11 @@ type CancelFunc func()
 type EventChan chan<- interface{}
 
 type options struct {
-	cl     *gamma.Client
-	xft    XferFnAtTime
-	err    chan error
-	cancel chan struct{}
-	event  chan interface{}
+	cl            *gamma.Client
+	xft           XferFnAtTime
+	err           chan error
+	cancel        chan struct{}
+	event         chan interface{}
 
 	startClockBeforeSetup bool
 	initialClock          time.Duration
@@ -148,11 +148,11 @@ func Animate(
 	err := make(chan error)
 	cancel := make(chan struct{})
 	o := options{
-		cl:     cl,
-		xft:    xft,
-		err:    err,
-		cancel: cancel,
-		event:  make(chan interface{}),
+		cl:            cl,
+		xft:           xft,
+		err:           err,
+		cancel:        cancel,
+		event:         make(chan interface{}),
 
 		startClockBeforeSetup: false,
 		initialClock:          0,
