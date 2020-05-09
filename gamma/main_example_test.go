@@ -34,5 +34,5 @@ func Example() {
 		log.Fatal(err)
 	}
 	defer s.Close()
-	s.SetGamma(gamma.PowerFn(1))
+	s.SetGamma(gamma.IdentityFn())
 }

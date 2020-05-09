@@ -53,6 +53,13 @@ necessarily be continuous or unique.
 */
 type XferFn func(ch Channel, in float64) (out float64)
 
+// IdentityFn returns the XferFn f(ch, in) = in.
+func IdentityFn() XferFn {
+	return func(ch Channel, in float64) (out float64) {
+		return in
+	}
+}
+
 // PowerFn returns the XferFn f(ch, in) = math.Pow(in, exp).  In the context of
 // traditional CRT gamma correction, exp is the "gamma correction value."
 func PowerFn(exp float64) XferFn {
