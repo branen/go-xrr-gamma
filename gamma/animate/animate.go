@@ -51,7 +51,9 @@ type XferFnAtTime func(
 ) (
 	fn gamma.XferFn, sleepFor time.Duration, exit bool)
 
-// CancelFunc may be called to cancel a running animation.
+// CancelFunc may be called to cancel a running animation.  It returns before
+// the teardown has been completed; to wait, see the (<-chan error) e returned
+// by Animate.
 type CancelFunc func()
 
 // EventChan may be used to send events to a running animation.
